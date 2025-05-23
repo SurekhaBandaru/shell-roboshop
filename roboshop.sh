@@ -1,0 +1,22 @@
+#!/bin/bash
+AMI_ID="ami-09c813fb71547fc4f"
+SG_ID="sg-077769cfadde11fb1"
+INSTANCES=("mongodb" "redis" "mysql" "rabbitmq" "catalogue" "user" "shipping" "payment" "dispatch" "frontend")
+ZONE_ID="Z04486643GN3RHKI6IXZK"
+DOMAIN_NAME="devopspract.site"
+
+for instance in ${INSTANCES[@]}
+do
+#to get the instance id
+INSTANCE_ID=$(aws ec2 run-instances --image-id ami-09c813fb71547fc4f --instance-type t2.micro --security-group-ids sg-077769cfadde11fb1 --tag-specifications "ResourceType=instance,Tags=[{Key=Name, Value=$instance}]" --query "Instances[0].InstanceId" --output text)
+
+if [$instance != "frontend"]
+#query private if not frontend
+then
+IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query "Reservations[0].Instances[0].PrivateIpAddress" --output text)
+else
+#query public ip the instance created is frontend
+IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query "Reservations[0].Instances[0].PublicIpAddress" --output text)
+fi
+
+done 
