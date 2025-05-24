@@ -21,11 +21,11 @@ if [ $USERID -ne 0]; then
     # as there is no root access, exit the process here
     exit 1
 else
-    echo -e "$N You are running with root access $N" | tee -a $LOG_FILE
+    echo -e "$Y You are running with root access $N" | tee -a $LOG_FILE
 fi
 
 #create log directiry
-mkdir $LOG_FILE
+mkdir -p $LOG_FILE
 
 VALIDATE() {
     if [ $1 -eq 0 ]; then
@@ -72,7 +72,7 @@ VALIDATE $? "Removing default content in nginx config file"
 
 #copy the content stored in local file nginx.conf to nginx's config location, local file name can be anything.conf
 cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf
-VALIDATE $? "Copy content into nginx conf"
+VALIDATE $? "Copying content into nginx conf"
 
 systemctl restart nginx 
 VALIDATE $? "Restarting nginx"
