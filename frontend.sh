@@ -16,7 +16,7 @@ mkdir -p $LOG_FOLDER
 echo "Script started executing at : $(date)" | tee -a $LOG_FILE
 
 #check if user has root access
-if [ $USERID -ne 0]; then
+if [ $USERID -ne 0 ]; then
     echo -e "$R ERROR: Please run the command with root access $N" | tee -a $LOG_FILE
     # as there is no root access, exit the process here
     exit 1
@@ -25,7 +25,7 @@ else
 fi
 
 #create log directiry
-mkdir -p $LOG_FILE
+#mkdir -p $LOG_FILE
 
 VALIDATE() {
     if [ $1 -eq 0 ]; then
