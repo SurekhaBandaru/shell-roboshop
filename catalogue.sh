@@ -97,7 +97,7 @@ dnf install mongodb-mongosh -y &>>$LOG_FILE
 VALIDATE $? "Installing mongo client"
 
 #Load data only if catalogue db exists - it will us the index of catalogue db
-STATUS=$(mongosh --host mongodb.daws84s.site --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
+STATUS=$(mongosh --host mongodb.devopspract.site --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
 #indices starts from 0 
 if [ $STATUS -lt 0 ]
 then
