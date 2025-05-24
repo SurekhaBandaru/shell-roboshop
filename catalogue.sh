@@ -15,12 +15,12 @@ mkdir -p $LOG_FOLDER
 echo "Script started executing at : $(date)" | tee -a $LOG_FILE
 
 #check if user has root access
-if [ $USERID -ne 0]; then
+if [ $USERID -ne 0 ]; then
     echo -e "$R ERROR: Please run the command with root access $N" | tee -a $LOG_FILE
     # as there is no root access, exit the process here
     exit 1
 else
-    echo -e "$N You are running with root access $N" | tee -a $LOG_FILE
+    echo -e "$Y You are running with root access $N" | tee -a $LOG_FILE
 fi
 
 VALIDATE() {
@@ -46,14 +46,14 @@ dnf install nodejs -y &>>$LOG_FILE
 VALIDATE $? "Install nodejs"
 
 #we face issues-failures whenwe run this entire script from second time onwards, it is good to check roboshop already created or not
-#id robodhp
-#if [ $? -ne 0]
-#then
-useradd --system --home /app --shell /sbin/nologin --comment "Roboshop Sytem User" roboshop &>>$LOG_FILE
-VALIDATE $? "Creating Systemuser roboshop"
-#else
-#echo -e "Systemuser Roboshop already created.. $Y SKIIPING creation $N"
-#fi
+id roboshop
+if [ $? -ne 0 ]
+then
+    useradd --system --home /app --shell /sbin/nologin --comment "Roboshop Sytem User" roboshop &>>$LOG_FILE
+    VALIDATE $? "Creating Systemuser roboshop"
+else
+    echo -e "Systemuser Roboshop already created.. $Y SKIIPING creation $N"
+fi
 
 #mkdir -p /app - if not created, create now
 mkdir /app
@@ -63,7 +63,10 @@ curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue
 VALIDATE $? "Downloading catalogue"
 
 cd /app
-#rm -rf /app/*
+#remove content in /app directory before unzipping unless it causes issues
+rm -rf /app/*
+VALIDATE $? "remove content from app directory"
+
 unzip /tmp/catalogue.zip &>>$LOG_FILE
 VALIDATE $? "unzipping catalogure service"
 
@@ -87,6 +90,7 @@ systemctl restart catalogue.service &>>$LOG_FILE
 VALIDATE $? "Restart Catalogue service"
 
 cp $SCRIPT_DIR/mongodb.repo /etc/yum.repos.d/mongd.conf
+VALIDATE $? "copy mongo db repo content..."
 
 dnf install mongod-mongosh -y &>>$LOG_FILE
 
@@ -94,7 +98,8 @@ VALIDATE $? "Installings mongo client"
 
 #Load data only if catalogue db exists - it will us the index of catalogue db
 STATUS=$(mongosh --host mongodb.daws84s.site --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
-if [ $STATUS -lt 0]
+#indices starts from 0 
+if [ $STATUS -lt 0 ]
 then
     mongosh --host mongodb.devopspract.site </app/db/master-data.js &>>$LOG_FILE
     VALIDATE $? "Loading data into mongodb"
