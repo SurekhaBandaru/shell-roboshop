@@ -46,7 +46,7 @@ cp $SCRIPT_DIR/mongodb.repo /etc/yum.repos.d/mongo.repo
 
 VALIDATE $? "copying mongodb repo"
 #install mongo db
-dnf install mongod-org -y &>>$LOG_FILE
+dnf install mongodb-org -y &>>$LOG_FILE
 VALIDATE $? "Installing mongo db server"
 
 #by default mongodb is locally accessible, so we need to change that 127.0.0.1 to internet access 0.0.0.0 at
