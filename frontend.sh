@@ -40,7 +40,7 @@ VALIDATE() {
 
 #----------------- Actual script starts --------------
 
-dnf module disable nginx &>>LOG_FILE
+dnf module disable nginx -y &>>LOG_FILE
 VALIDATE $? "Disabling current nginx version"
 
 dnf module enable nginx:1.24 -y &>>LOG_FILE
