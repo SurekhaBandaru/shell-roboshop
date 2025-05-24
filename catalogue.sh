@@ -8,7 +8,7 @@ N="\e[0m"
 LOG_FOLDER="/var/log/shellscript-logs"
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 LOG_FILE="$LOG_FOLDER/$SCRIPT_NAME.log"
-$SCRIPT_DIR=$PWD
+SCRIPT_DIR=$PWD
 
 #Create log folder directory befire trying to store data into logs
 mkdir -p $LOG_FOLDER
@@ -89,12 +89,12 @@ VALIDATE $? "Starting Catalogue service"
 systemctl restart catalogue.service &>>$LOG_FILE
 VALIDATE $? "Restart Catalogue service"
 
-cp $SCRIPT_DIR/mongodb.repo /etc/yum.repos.d/mongd.conf
+cp $SCRIPT_DIR/mongodb.repo /etc/yum.repos.d/mongo.repo
 VALIDATE $? "copy mongo db repo content..."
 
 dnf install mongod-mongosh -y &>>$LOG_FILE
 
-VALIDATE $? "Installings mongo client"
+VALIDATE $? "Installing mongo client"
 
 #Load data only if catalogue db exists - it will us the index of catalogue db
 STATUS=$(mongosh --host mongodb.daws84s.site --eval 'db.getMongo().getDBNames().indexOf("catalogue")')

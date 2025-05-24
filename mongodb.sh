@@ -8,6 +8,7 @@ N="\e[0m"
 LOG_FOLDER="/var/log/shellscript-logs"
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 LOG_FILE="$LOG_FOLDER/$SCRIPT_NAME.log"
+SCRIPT_DIR=$PWD
 
 #Create log folder directory befire trying to store data into logs
 #creates if not created earler
@@ -41,15 +42,15 @@ VALIDATE() {
 
 #create a repo file and paste the repo info there eg: mongodb.repo - can be any readable name
 # copy the info of mongodb.repo to below location
-cp mongodb.repo /etc/yum.repos.d/mongo.repo
+cp $SCRIPT_DIR/mongodb.repo /etc/yum.repos.d/mongo.repo
 
 VALIDATE $? "copying mongodb repo"
 #install mongo db
 dnf install mongod-org -y &>>$LOG_FILE
 VALIDATE $? "Installing mongo db server"
 
-#by default mongodn is locally accessible, so we need to change that 127.0.0.1 to internet access 0.0.0.0 at
-/etc/mongod.conf
+#by default mongodb is locally accessible, so we need to change that 127.0.0.1 to internet access 0.0.0.0 at
+#/etc/mongod.conf
 
 #enable mongodb
 systemctl enable mongod &>>$LOG_FILE
