@@ -11,10 +11,33 @@ for instance in ${INSTANCES[@]}; do
 
     if [ $instance != "frontend" ]; then #query private if not frontend
         IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query "Reservations[0].Instances[0].PrivateIpAddress" --output text)
+        #Example: RECORD_NAME=monngodb.devopspract.site
+        RECORD_NAME="$instance.$DOMAIN_NAME"
     else
         #query public ip the instance created is frontend
         IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query "Reservations[0].Instances[0].PublicIpAddress" --output text)
+       #As frontend is publicily accessible, devopspract.site
+        RECORD_NAME=$DOMAIN_NAME 
     fi
     echo "$instance ip address: $IP"
+
+    #create/update A record sets
+    aws route53 change-resource-record-sets \
+    --hosted-zone-id $ZONE_ID \
+    --change-batch '
+    {
+        "Comment": "Creating or Updating a record set for cognito endpoint"
+        ,"Changes": [{
+        "Action"              : "UPSERT"
+        ,"ResourceRecordSet"  : {
+            "Name"              : "'$RECORD_NAME'"
+            ,"Type"             : "A"
+            ,"TTL"              : 1
+            ,"ResourceRecords"  : [{
+                "Value"         : "'$IP'"
+            }]
+        }
+        }]
+    }'
 
 done
