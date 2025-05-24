@@ -6,7 +6,8 @@ ZONE_ID="Z04486643GN3RHKI6IXZK"
 DOMAIN_NAME="devopspract.site"
 
 #for instance in ${INSTANCES[@]}; do
-for instance in $@; do
+for instance in $@
+do
     #to get the instance id
     INSTANCE_ID=$(aws ec2 run-instances --image-id ami-09c813fb71547fc4f --instance-type t3.micro --security-group-ids sg-077769cfadde11fb1 --tag-specifications "ResourceType=instance,Tags=[{Key=Name, Value=$instance}]" --query "Instances[0].InstanceId" --output text)
 
