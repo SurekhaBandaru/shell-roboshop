@@ -69,8 +69,8 @@ VALIDATE $? "Copying user service info to systemd folder"
 systemctl daemon-reload &>>LOG_FILE
 VALIDATE $? "Daemon reload- reloading systemd folder adter change"
 
-systemctl enable user.service 
+systemctl enable user 
 $VALIDATE $? "Enabling User Service"
 
-systemctl start user.service $>>$LOG_FILE
+systemctl start user $>>$LOG_FILE
 VALIDATE $? "Disabling user service"a

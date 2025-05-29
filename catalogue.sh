@@ -10,7 +10,7 @@ SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 LOG_FILE="$LOG_FOLDER/$SCRIPT_NAME.log"
 SCRIPT_DIR=$PWD
 
-#Create log folder directory befire trying to store data into logs
+#Create log folder directory before trying to store data into logs
 mkdir -p $LOG_FOLDER
 echo "Script started executing at : $(date)" | tee -a $LOG_FILE
 
@@ -47,8 +47,7 @@ VALIDATE $? "Install nodejs"
 
 #we face issues-failures whenwe run this entire script from second time onwards, it is good to check roboshop already created or not
 id roboshop
-if [ $? -ne 0 ]
-then
+if [ $? -ne 0 ]; then
     useradd --system --home /app --shell /sbin/nologin --comment "Roboshop Sytem User" roboshop &>>$LOG_FILE
     VALIDATE $? "Creating Systemuser roboshop"
 else
@@ -80,14 +79,14 @@ VALIDATE $? "Copying catalogue service to systemd folder"
 systemctl daemon-reload &>>$LOG_FILE
 VALIDATE $? "Loading after changes in systemd folder"
 
-systemctl enable catalogue.service &>>$LOG_FILE
+systemctl enable catalogue &>>$LOG_FILE
 VALIDATE $? "Enabling Catalogue service"
 
-systemctl start catalogue.service
+systemctl start catalogue
 VALIDATE $? "Starting Catalogue service"
 
-systemctl restart catalogue.service &>>$LOG_FILE
-VALIDATE $? "Restart Catalogue service"
+#systemctl restart catalogue &>>$LOG_FILE
+#VALIDATE $? "Restart Catalogue service"
 
 cp $SCRIPT_DIR/mongodb.repo /etc/yum.repos.d/mongo.repo
 VALIDATE $? "copy mongo db repo content..."
@@ -98,12 +97,10 @@ VALIDATE $? "Installing mongo client"
 
 #Load data only if catalogue db exists - it will us the index of catalogue db
 STATUS=$(mongosh --host mongodb.devopspract.site --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
-#indices starts from 0 
-if [ $STATUS -lt 0 ]
-then
+#indices starts from 0
+if [ $STATUS -lt 0 ]; then
     mongosh --host mongodb.devopspract.site </app/db/master-data.js &>>$LOG_FILE
     VALIDATE $? "Loading data into mongodb"
-else 
+else
     echo -e "Data is already loaded...$Y SKIPPING $N"
 fi
-
