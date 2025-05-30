@@ -34,20 +34,17 @@ VALIDATE() {
 echo "Enter password to connect mysql"
 read -p MYSQL_ROOT_PASSWORD
 
-
 dnf install maven -y
 VALIDATE $? "Installing maven and java"
 
 id roboshop
-if[ $? -ne 0 ]
-then 
+if [ $? -ne 0 ]; then
 
-useradd --sytem --home /app --shell sbin/nologin --comment "Roboshop System User" roboshop
-VALIDATE $? "Creating Roboshop system user"
+    useradd --sytem --home /app --shell sbin/nologin --comment "Roboshop System User" roboshop
+    VALIDATE $? "Creating Roboshop system user"
 else
-echo -e "Rooboshop user already created .... $Y SKIPPING $N" | tee -a $LOG_FILE
+    echo -e "Rooboshop user already created .... $Y SKIPPING $N" | tee -a $LOG_FILE
 fi
-
 
 mkdir -p /app &>>$LOG_FILE
 VALIDATE $? "Creating app directory"
@@ -87,33 +84,23 @@ VALIDATE $? "Installing mysql client"
 #Checking whether data already loaded or not in db
 mysql -h mysql.devopspract.site -uroot -p$MYSQL_ROOT_PASSWORD -e 'use cities' &>>$LOG_FILE
 
-if [ $? -ne 0 ]
-then
-mysql -h mysql.devopspract.site -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/schema.sql &>>$LOG_FILE
+if [ $? -ne 0 ]; then
+    mysql -h mysql.devopspract.site -uroot -p$MYSQL_ROOT_PASSWORD </app/db/schema.sql &>>$LOG_FILE
 
+    mysql -h mysql.devopspract.site -uroot -p$MYSQL_ROOT_PASSWORD </app/db/app-user.sql &>>$LOG_FILE
 
-mysql -h mysql.devopspract.site -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/app-user.sql &>>$LOG_FILE
-
-
-mysql -h mysql.devopspract.site -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/master-data.sql &>>$LOG_FILE
-VALIDATE $? "Loading data into Mysql"
+    mysql -h mysql.devopspract.site -uroot -p$MYSQL_ROOT_PASSWORD </app/db/master-data.sql &>>$LOG_FILE
+    VALIDATE $? "Loading data into Mysql"
 
 else
-echo -e "Data is already loaded into Mysql .... $Y SKIPPING $N" 
+    echo -e "Data is already loaded into Mysql .... $Y SKIPPING $N"
 fi
 
 systemctl restart shipping &>>$LOG_FILE
 
 VALIDATE $? "Restarting Shipping Service"
 
-
 END_TIME=$(date +%s)
-TOTAL_TIME = $(( $END_TIME - $START_TIME ))
+TOTAL_TIME = $(($END_TIME - $START_TIME))
 
 echo "Script executed successfully, $Y time taken: $TOTAL_TIME seconds $N" | tee -a $LOG_FILE
-
-
-
-
-
-
