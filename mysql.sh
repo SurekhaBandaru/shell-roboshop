@@ -14,7 +14,7 @@ SCRIPT_DIR=$PWD
 
 mkdir -p $LOG_FOLDER
 
-if [ USERID -ne 0 ]; then
+if [ $USERID -ne 0 ]; then
     echo -e "$R ERROR ... please run the script with sudo access$N" | tee -a $LOG_FILE
     exit 1
 else
