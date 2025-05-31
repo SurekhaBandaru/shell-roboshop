@@ -32,6 +32,7 @@ VALIDATE() {
         echo -e "$2 is ...... $G SUCCESS $N" | tee -a $LOG_FILE
     else
         echo -e "$2 is ..... $R FAILURE $N" | tee -a $LOG_FILE
+        exit 1
     fi
 }
 
@@ -52,8 +53,8 @@ VALIDATE $? "Installing Nginx"
 systemctl enable nginx  &>>$LOG_FILE
 #VALIDATE $? "Enabling Nginx"
 
-#systemctl start nginx
-#VALIDATE $? "Enabling and starting nginx"
+systemctl start nginx
+VALIDATE $? "Enabling and starting nginx"
 
 rm -rf /usr/share/nginx/html/* &>>$LOG_FILE
 VALIDATE $? "Removing defalut content"
@@ -74,5 +75,5 @@ VALIDATE $? "Removing default content in nginx config file"
 cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf
 VALIDATE $? "Copying content into nginx conf"
 
-systemctl start nginx 
+systemctl restart nginx 
 VALIDATE $? "Restarting nginx"
