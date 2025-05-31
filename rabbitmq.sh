@@ -33,7 +33,7 @@ VALIDATE() {
 }
 
 echo "Please enter rabbitmq password to set up"
-read -p RABBITMQ_PASSWORD
+read -s RABBITMQ_PASSWORD
 
 cp $SCRIPT_DIR/rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo &>>$LOG_FILE
 VALIDATE $? "Copying rabbit mq repo"
