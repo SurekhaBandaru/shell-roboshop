@@ -15,7 +15,7 @@ SCRIPT_DIR=$PWD
 mkdir -p $LOG_FOLDER
 echo "Script started executing at : $(date)" | tee -a $LOG_FILE
 
-if [ USERID -ne 0 ]; then
+if [ $USERID -ne 0 ]; then
     echo -e "$R ERROR:: You are not running with root access $N" | tee -a $LOG_FILE
 else
     echo -e "$Y You are running with root access $N" | tee -a $LOG_FILE
