@@ -41,7 +41,7 @@ VALIDATE $? "Installing maven and java"
 id roboshop
 if [ $? -ne 0 ]; then
 
-    useradd --sytem --home /app --shell sbin/nologin --comment "Roboshop System User" roboshop
+    useradd --sytem --home /app --shell /sbin/nologin --comment "Roboshop System User" roboshop
     VALIDATE $? "Creating Roboshop system user"
 else
     echo -e "Rooboshop user already created .... $Y SKIPPING $N" | tee -a $LOG_FILE
@@ -77,7 +77,7 @@ systemctl enable shipping &>>$LOG_FILE
 VALIDATE $? "Enable Shipping"
 
 systemctl start shipping &>>$LOG_FILE
-VALIDATE $? "Starting Shipping" &>>$LOG_FILE
+VALIDATE $? "Starting Shipping" 
 
 dnf install mysql -y &>>$LOG_FILE
 VALIDATE $? "Installing mysql client"
