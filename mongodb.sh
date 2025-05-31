@@ -24,9 +24,6 @@ else
     echo -e "$N You are running with root access $N" | tee -a $LOG_FILE
 fi
 
-#create log directiry
-mkdir $LOG_FOLDER
-
 VALIDATE() {
     if [ $1 -eq 0 ]; then
         echo -e "$2 is ...... $G SUCCESS $N" | tee -a $LOG_FILE
