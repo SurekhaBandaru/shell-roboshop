@@ -45,7 +45,7 @@ then
     VALIDATE $? "Creating System user Roboshop"
 
 else
-    echo "User already created... $Y $SKIPPING $N" | tee -a &LOG_FILE
+    echo -e "User already created... $Y $SKIPPING $N" | tee -a $LOG_FILE
 fi
 
 

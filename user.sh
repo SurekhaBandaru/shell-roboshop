@@ -70,7 +70,7 @@ systemctl daemon-reload &>>LOG_FILE
 VALIDATE $? "Daemon reload- reloading systemd folder adter change"
 
 systemctl enable user 
-$VALIDATE $? "Enabling User Service"
+VALIDATE $? "Enabling User Service"
 
 systemctl start user &>>$LOG_FILE
 VALIDATE $? "Disabling user service"
@@ -78,4 +78,4 @@ VALIDATE $? "Disabling user service"
 
 END_TIME=$(date +%s)
 TOTAL_TIME=$(( $END_TIME-$START_TIME ))
-echo "Script executed successfully, time taken: $Y $TOTAL_TIME seconds $N"
+echo -e "Script executed successfully, time taken: $Y $TOTAL_TIME seconds $N"
