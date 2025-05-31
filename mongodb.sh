@@ -25,7 +25,7 @@ else
 fi
 
 #create log directiry
-mkdir $LOG_FILE
+mkdir $LOG_FOLDER
 
 VALIDATE() {
     if [ $1 -eq 0 ]; then
