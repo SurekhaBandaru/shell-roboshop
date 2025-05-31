@@ -1,6 +1,6 @@
 #!/bin/bash
 
-START_TIME=$(date+ %s)
+START_TIME=$(date +%s)
 USERID=$(id -u)
 R="\e[31m"
 G="\e[32m"
@@ -73,4 +73,9 @@ systemctl enable user
 $VALIDATE $? "Enabling User Service"
 
 systemctl start user &>>$LOG_FILE
-VALIDATE $? "Disabling user service"a
+VALIDATE $? "Disabling user service"
+
+
+END_TIME=$(date +%s)
+TOTAL_TIME=$(( $END_TIME-$START_TIME ))
+echo "Script executed successfully, time taken: $Y $TOTAL_TIME seconds $N"
