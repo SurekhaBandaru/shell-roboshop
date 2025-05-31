@@ -21,7 +21,7 @@ if [ $USERID -ne 0 ]; then
     # as there is no root access, exit the process here
     exit 1
 else
-    echo -e "$N You are running with root access $N" | tee -a $LOG_FILE
+    echo -e "$Y You are running with root access $N" | tee -a $LOG_FILE
 fi
 
 VALIDATE() {
