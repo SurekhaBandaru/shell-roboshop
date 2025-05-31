@@ -39,9 +39,9 @@ dnf install maven -y
 VALIDATE $? "Installing maven and java"
 
 id roboshop
-if [ $? -ne 0 ]; then
-
-    useradd --sytem --home /app --shell /sbin/nologin --comment "Roboshop System User" roboshop
+if [ $? -ne 0 ]
+then
+    useradd --system --home /app --shell /sbin/nologin --comment "Roboshop System User" roboshop
     VALIDATE $? "Creating Roboshop system user"
 else
     echo -e "Rooboshop user already created .... $Y SKIPPING $N" | tee -a $LOG_FILE
