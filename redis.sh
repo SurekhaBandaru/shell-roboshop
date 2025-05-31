@@ -17,6 +17,7 @@ echo "Script started executing at : $(date)" | tee -a $LOG_FILE
 
 if [ $USERID -ne 0 ]; then
     echo -e "$R ERROR:: You are not running with root access $N" | tee -a $LOG_FILE
+    exit 1
 else
     echo -e "$Y You are running with root access $N" | tee -a $LOG_FILE
 fi
@@ -43,7 +44,8 @@ VALIDATE $? "Installing redis 7"
 
 #change 127.0.0.1 to internet accessible 0.0.0.0
 #protectedmode to no
-sed -i -e 's/127.0.0.1/0.0.0.0/g' -e 'protected-mode/c protected-mode no' /etc/redis/redis.conf
+sed -i -e 's/127.0.0.1/0.0.0.0/g' -e '/protected-mode/ c protected-mode no' /etc/redis/redis.conf
+VALIDATE $? "allow remote access and change protected mode to no"
 
 systemctl enable redis $>>$LOG_FILE
 VALIDATE $? "Enabling redis"
