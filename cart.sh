@@ -41,7 +41,7 @@ VALIDATE $? "Installing noder js version 20"
 id roboshop
 if [ $? -ne 0 ]
 then 
-    useradd --system --home /app --shell sbin/nologin --comment "Roboshop System User" roboshop
+    useradd --system --home /app --shell /sbin/nologin --comment "Roboshop System User" roboshop
     VALIDATE $? "Creating System user Roboshop"
 
 else
