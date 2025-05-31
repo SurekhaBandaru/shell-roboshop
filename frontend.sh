@@ -50,10 +50,10 @@ dnf install nginx -y &>>LOG_FILE
 VALIDATE $? "Installing Nginx"
 
 systemctl enable nginx &>>LOG_FILE
-VALIDATE $? "Enabling Nginx"
+#VALIDATE $? "Enabling Nginx"
 
-systemctl start nginx &>>LOG_FILE
-VALIDATE $? "Starting nginx"
+systemctl start nginx #&>>LOG_FILE
+VALIDATE $? "Enabling and starting nginx"
 
 rm -rf /usr/share/nginx/html/* &>>LOG_FILE
 VALIDATE $? "Removing defalut content"
