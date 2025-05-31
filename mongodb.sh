@@ -39,7 +39,7 @@ VALIDATE() {
 
 #create a repo file and paste the repo info there eg: mongodb.repo - can be any readable name
 # copy the info of mongodb.repo to below location
-cp mongodb.repo /etc/yum.repos.d/mongo.repo
+cp mongo.repo /etc/yum.repos.d/mongodb.repo
 
 VALIDATE $? "copying mongodb repo"
 #install mongo db
