@@ -33,7 +33,7 @@ VALIDATE() {
 }
 
 echo "Enter password to connect mysql"
-read -p MYSQL_ROOT_PASSWORD
+read -s MYSQL_ROOT_PASSWORD
 
 dnf install maven -y
 VALIDATE $? "Installing maven and java"
