@@ -16,7 +16,7 @@ mkdir -p $LOG_FOLDER
 
 echo "Script started executing at : $(date)" | tee -a $LOG_FILE
 
-if [ USERID -ne 0 ]; then
+if [ $USERID -ne 0 ]; then
     echo -e "$R ERROR::Please run the script with root access $N" | tee -a $LOG_FILE
     exit 1
 else
@@ -38,7 +38,7 @@ VALIDATE $? "Installing golang"
 id roboshop
 if [ $? -ne 0 ]
 then
-    useradd --system --home /app --shell sbin/nologin --comment "Roboshop System User" roboshop
+    useradd --system --home /app --shell /sbin/nologin --comment "Roboshop System User" roboshop
     VALIDATE $? "Creating system user roboshop"
 else
     echo -e "Roboshop user alrad created... $Y SKIPPING $N" | tee -a $LOG_FILE
@@ -47,10 +47,11 @@ fi
 mkdir -p /app
 
 curl -L -o /tmp/dispatch.zip https://roboshop-artifacts.s3.amazonaws.com/dispatch-v3.zip &>>$LOG_FILE
-cd /app
+
 
 #remove the content in app directot not /app
 rm -rf /app/*
+cd /app
 
 unzip /tmp/dispatch.zip &>>$LOG_FILE
 VALIDATE $? "Unzipping dispatch service"
@@ -74,7 +75,7 @@ systemctl start dispatch &>>$LOG_FILE
 VALIDATE $? "Starting dispatch service"
 
 END_TIME=$(date +%s)
-TOTAL_TIME=$ (( $END_TIME-$START_TIME))
+TOTAL_TIME=$(( $END_TIME-$START_TIME))
 
 echo -e "Script executed successfully, time taken: $Y $TOTAL_TIME seconds $N" | tee -a $LOG_FILE
 
