@@ -59,7 +59,7 @@ cd /app
 rm -rf /app/*  &>>$LOG_FILE
 VALIDATE $? "Remove content from app directly"
 
-upzip /tmp/cart.zip 
+unzip /tmp/cart.zip 
 VALIDATE $? "Unzipping cart"
 
 npm install &>>$LOG_FILE

@@ -63,7 +63,7 @@ VALIDATE $? "Unzipping user service"
 
 npm install &>>LOG_FILE
 #vim /systemd/system/user.service
-cp $SCRIPT_DIR/user.service /systemd/system/user.service &>>LOG_FILE
+cp $SCRIPT_DIR/user.service /etc/systemd/system/user.service &>>LOG_FILE
 VALIDATE $? "Copying user service info to systemd folder"
 
 systemctl daemon-reload &>>LOG_FILE
