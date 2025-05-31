@@ -14,7 +14,8 @@ mkdir -p $LOG_FOLDER
 echo "Script started executing at : $(date)" | tee -a $LOG_FILE
 
 #Check if user has root access
-if [ $USERID -ne 0 ]; then
+if [ $USERID -ne 0 ]
+then
     echo -e "$R ERROR:: Please run the command with sudo access $N" | tee -a $LOG_FILE
     exit 1
 else
@@ -22,7 +23,8 @@ else
 fi
 
 VALIDATE() {
-    if [ $1 -eq 0 ]; then
+    if [ $1 -eq 0 ]
+    then
         echo -e "$2 is ..... $G SUCCESS $N" | tee -a $LOG_FILE
     else
         echo -e "$2 is ...... $R FAILURE $N" | tee -a $LOG_FILE
@@ -42,37 +44,39 @@ VALIDATE $? "Installing noder js version 20"
 id roboshop
 if [ $? -ne 0 ]
 then 
-    useradd --system --home /app --shell /sbin/nologin --comment "Roboshop System User" roboshop
+    useradd --system --home /app --shell /sbin/nologin --comment "Roboshop System User" roboshop &>>$LOG_FILE
     VALIDATE $? "Creating System user Roboshop"
 
 else
     echo -e "User already created... $Y $SKIPPING $N" | tee -a $LOG_FILE
+
 fi
-
-
-curl -L -o /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip &>>$LOG_FILE
 
 mkdir -p /app
 VALIDATE $? "Creating app directory"
 
-cd /app
+curl -o /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip &>>$LOG_FILE
+VALIDATE $? "Dowloading cart service"
 
-rm -rf /app/*  &>>$LOG_FILE
+rm -rf /app/* &>>$LOG_FILE
 VALIDATE $? "Remove content from app directly"
 
-unzip /tmp/cart.zip 
+cd /app
+
+
+unzip /tmp/cart.zip &>>$LOG_FILE
 VALIDATE $? "Unzipping cart"
 
 npm install &>>$LOG_FILE
 VALIDATE $? "Installing node pacaking dependencies"
 
-cp $SCRIPT_DIR/cart.service /etc/systemd/system/cart.service &>>$LOG_FILE
+cp $SCRIPT_DIR/cart.service /etc/systemd/system/cart.service
 VALIDATE $? "Copy cart sevice info to systemd folder"
 
 systemctl daemon-reload &>>$LOG_FILE
 VALIDATE $? "Deamon-reload the changes in systemd folder"
 
-systemctl enable cart
+systemctl enable cart &>>$LOG_FILE
 VALIDATE $? "Enabling cart"
 
 systemctl start cart &>>$LOG_FILE
