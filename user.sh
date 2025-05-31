@@ -48,7 +48,7 @@ else
     echo -e "User roboshop already created... $Y SKIPPING $N"
 fi
 
-mkdir -p /app
+mkdir -p /app &>>$LOG_FILE
 VALIDATE $? "Creating App directory"
 
 curl -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip &>>$LOG_FILE
@@ -72,5 +72,5 @@ VALIDATE $? "Daemon reload- reloading systemd folder adter change"
 systemctl enable user 
 $VALIDATE $? "Enabling User Service"
 
-systemctl start user $>>$LOG_FILE
+systemctl start user &>>$LOG_FILE
 VALIDATE $? "Disabling user service"a
