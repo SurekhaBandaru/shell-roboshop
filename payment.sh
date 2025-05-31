@@ -37,7 +37,7 @@ VALIDATE $? "Installing python version 3 packages"
 
 id roboshop
 if [ $? -ne 0 ]; then
-    useradd --system --home /app --shell sbin/nologin --comment "Roboshop System User" roboshop &>>$LOG_FILE
+    useradd --system --home /app --shell /sbin/nologin --comment "Roboshop System User" roboshop &>>$LOG_FILE
     VALIDATE $? "Creating system user"
 else
     echo -e "User already created...... $Y SKIPPING $N" | tee -a $LOG_FILE
@@ -48,9 +48,11 @@ VALIDATE $? "Creating app directory/folder"
 
 curl -L -o /tmp/payment.zip https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip &>>$LOG_FILE
 VALIDATE $? "Downloading payment service code"
-cd /app
+
 
 rm -rf /app/*
+VALIDATE $? "Removing content from app directory"
+cd /app
 unzip /tmp/payment.zip &>>$LOG_FILE
 VALIDATE $? "Unzipping payment service code"
 
