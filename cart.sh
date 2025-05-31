@@ -15,10 +15,10 @@ echo "Script started executing at : $(date)" | tee -a $LOG_FILE
 
 #Check if user has root access
 if [ $USERID -ne 0 ]; then
-    echo -e "$R ERROR:: Please run the command with sudo access $N"
+    echo -e "$R ERROR:: Please run the command with sudo access $N" | tee -a $LOG_FILE
     exit 1
 else
-    echo -e "You are running with root access"
+    echo -e "$Y You are running with root access $N" | tee -a $LOG_FILE
 fi
 
 VALIDATE() {

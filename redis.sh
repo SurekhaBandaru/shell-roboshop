@@ -57,5 +57,5 @@ VALIDATE $? "Starting redis"
 
 # %s is to display date in seconds format
 END_TIME=$(date +%s)
-TOTAL_TIME=$(($END_TIME-$START_TIME))
+TOTAL_TIME=$(( $END_TIME-$START_TIME ))
 echo -e "Script Execution completed successfully, $Y time taken: $TOTAL_TIME seconds $N" | tee -a $LOG_FILE
