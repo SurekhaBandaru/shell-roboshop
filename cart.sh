@@ -14,7 +14,7 @@ mkdir -p $LOG_FOLDER
 echo "Script started executing at : $(date)" | tee -a $LOG_FILE
 
 #Check if user has root access
-if [ $USERID -ne 0]; then
+if [ $USERID -ne 0 ]; then
     echo -e "$R ERROR:: Please run the command with sudo access $N"
     exit 1
 else
@@ -22,7 +22,7 @@ else
 fi
 
 VALIDATE() {
-    if [$1 -eq 0]; then
+    if [ $1 -eq 0 ]; then
         echo -e "$2 is ..... $G SUCCESS $N" | tee -a $LOG_FILE
     else
         echo -e "$2 is ...... $R FAILURE $N" | tee -a $LOG_FILE
