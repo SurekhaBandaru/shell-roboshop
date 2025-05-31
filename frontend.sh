@@ -40,34 +40,34 @@ VALIDATE() {
 
 #----------------- Actual script starts --------------
 
-dnf module disable nginx -y &>>LOG_FILE
+dnf module disable nginx -y &>>$LOG_FILE
 VALIDATE $? "Disabling current nginx version"
 
-dnf module enable nginx:1.24 -y &>>LOG_FILE
+dnf module enable nginx:1.24 -y &>>$LOG_FILE
 VALIDATE $? "Enabling required nginx version :1.24"
 
-dnf install nginx -y &>>LOG_FILE
+dnf install nginx -y &>>$LOG_FILE
 VALIDATE $? "Installing Nginx"
 
-systemctl enable nginx &>>LOG_FILE
+systemctl enable nginx &>>$LOG_FILE
 #VALIDATE $? "Enabling Nginx"
 
-systemctl start nginx #&>>LOG_FILE
+systemctl start nginx
 VALIDATE $? "Enabling and starting nginx"
 
-rm -rf /usr/share/nginx/html/* &>>LOG_FILE
+rm -rf /usr/share/nginx/html/* &>>$LOG_FILE
 VALIDATE $? "Removing defalut content"
 
-curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
+curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip &>>$LOG_FILE
 VALIDATE $? "Downloading frontend code"
 
 cd /usr/share/nginx/html
 
-unzip /tmp/frontend.zip &>>LOG_FILE
+unzip /tmp/frontend.zip &>>$LOG_FILE
 VALIDATE $? "Unzipping frontend folder"
 
 #Delete the defult content
-rm -rf /etc/nginx/nginx.conf &>>LOG_FILE
+rm -rf /etc/nginx/nginx.conf &>>$LOG_FILE
 VALIDATE $? "Removing default content in nginx config file"
 
 #copy the content stored in local file nginx.conf to nginx's config location, local file name can be anything.conf
